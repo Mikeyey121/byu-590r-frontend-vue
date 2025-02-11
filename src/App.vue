@@ -1,4 +1,4 @@
-<script  lang="ts">
+<script lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import LoginView from './views/login/LoginView.vue'
 

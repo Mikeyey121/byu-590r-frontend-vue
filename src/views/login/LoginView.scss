@@ -1,1 +1,40 @@
 @use '@/assets/styles/ui.scss';
+
+// Center the login form using flexbox as required
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #121212;
+  background: linear-gradient(145deg, #121212 0%, #1a237e 100%);
+}
+
+// Card styling with proper spacing
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+// Form fields container with column flex
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// Button container with both row and column gaps as required
+.button-container {
+  display: flex;
+  flex-direction: row; // Row layout for buttons
+  flex-wrap: wrap; // Allow wrapping for responsive design
+  gap: 1rem; // Gap applies to both row and column when wrapped
+  margin-top: 1.5rem;
+}
