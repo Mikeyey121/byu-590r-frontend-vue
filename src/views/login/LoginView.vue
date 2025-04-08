@@ -10,7 +10,7 @@
       >
         <v-text-field
           v-model="username"
-          label="Username"
+          label="Email"
           :rules="usernameRules"
           required
         />
@@ -29,9 +29,19 @@
             color="primary"
             :disabled="!isFormValid"
             :loading="isLoading"
+            @click="submitLogin()"
             block
           >
             Login
+          </v-btn>
+
+          <v-btn 
+            type="submit"
+            color="primary"
+            @click="showRegisterForm = true"
+            block
+          >
+            Register
           </v-btn>
           
           <v-btn
@@ -69,6 +79,59 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="showRegisterForm" max-width="500px">
+      <v-card>
+        <v-card-title>Register</v-card-title>
+        <v-card-text>
+          <v-form v-model="isRegisterFormValid" @submit.prevent="submitRegister">
+            <v-text-field
+              v-model="register.name"
+              label="Full Name"
+              :rules="nameRules"
+              required
+            />
+            <v-text-field
+              v-model="register.email"
+              label="Email"
+              type="email"
+              :rules="emailRules"
+              required
+            />
+            <v-text-field
+              v-model="register.password"
+              label="Password"
+              type="password"
+              :rules="passwordRules"
+              required
+            />
+            <v-text-field
+              v-model="register.c_password"
+              label="Confirm Password"
+              type="password"
+              :rules="confirmPasswordRules"
+              required
+            />
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="grey" variant="text" @click="cancelRegister">Cancel</v-btn>
+          <v-btn 
+            color="primary" 
+            :disabled="!isRegisterFormValid" 
+            :loading="registerFormIsLoading" 
+            @click="submitRegister"
+          >
+            Register
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
+
+
   </div>
 </template>
 
