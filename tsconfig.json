@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/views/home/HomeView.vue"]
+      "@/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
