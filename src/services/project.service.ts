@@ -1,12 +1,30 @@
 import api from '@/api'
-
+import axios from 'axios';
+import API_URL from './env';
+import authHeader from './auth-header';
 class ProjectService {
   getProjects() {
-    return api.get('/api/projects')
+    return axios.get(API_URL + 'projects',
+      { headers: authHeader() })
+      .then(response => {
+          return response.data.data;
+      });
   }
 
   getProjectManagers() {
-    return api.get('/api/project-managers')
+    return axios.get(API_URL + 'project-managers',
+      { headers: authHeader() })
+      .then(response => {
+          return response.data.data;
+      });
+  }
+
+  getGenres() {
+    return axios.get(API_URL + 'genres',
+      { headers: authHeader() })
+      .then(response => {
+          return response.data.data;
+      });
   }
 
   createProject(projectData) {
@@ -15,6 +33,7 @@ class ProjectService {
     formData.append('projectStartDate', projectData.projectStartDate)
     formData.append('projectBudget', projectData.projectBudget)
     formData.append('managerId', projectData.managerId)
+    formData.append('genreId', projectData.genreId)
     
     if (projectData.projectFile) {
       const fileInput = Array.isArray(projectData.projectFile) 
@@ -26,11 +45,8 @@ class ProjectService {
       }
     }
 
-    return api.post('/api/projects', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    return axios.post(API_URL + 'projects', formData,
+      { headers: authHeader('multipart') })
   }
 
   updateProject(projectId, projectData, newFile = null) {
@@ -39,7 +55,7 @@ class ProjectService {
     formData.append('projectStartDate', projectData.projectStartDate)
     formData.append('projectBudget', Number(projectData.projectBudget).toString())
     formData.append('managerId', projectData.managerId)
-    
+    formData.append('genreId', projectData.genreId)
     // Only append file if a new one was selected
     if (newFile) {
       const fileInput = Array.isArray(newFile) 
@@ -52,19 +68,18 @@ class ProjectService {
     }
     
     formData.append('_method', 'PUT')
-    return api.post('/api/projects/' + projectId, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    return axios.post(API_URL + 'projects/' + projectId, formData,
+      { headers: authHeader('multipart') })
   }
 
   deleteProject(projectId) {
-    return api.delete('/api/projects/' + projectId)
+    return axios.delete(API_URL + 'projects/' + projectId,
+      { headers: authHeader() })
   }
 
   removeProjectImage(projectId) {
-    return api.delete('/api/projects/' + projectId + '/image')
+    return axios.delete(API_URL + 'projects/' + projectId + '/image',
+      { headers: authHeader() })
       .then(response => {
         return response.data.success ? response.data.data : null;
       });

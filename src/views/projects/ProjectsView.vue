@@ -47,6 +47,16 @@
                         <v-list-item-title>Manager</v-list-item-title>
                         <v-list-item-subtitle>{{ project.project_manager?.managerName }}</v-list-item-subtitle>
                       </v-list-item>
+
+                      <v-list-item class="px-0 py-1">
+                        <template v-slot:prepend>
+                          <v-avatar color="primary" class="mr-3" size="36">
+                            <v-icon icon="mdi-account"></v-icon>
+                          </v-avatar>
+                        </template>
+                        <v-list-item-title>Genre</v-list-item-title>
+                        <v-list-item-subtitle>{{ getGenreName(project.genreId) }}</v-list-item-subtitle>
+                      </v-list-item>
                       
                       <v-list-item class="px-0 py-1">
                         <template v-slot:prepend>
@@ -137,6 +147,17 @@
                 :rules="[v => !!v || 'Project manager is required']"
                 required
               />
+
+              <v-select
+                v-model="newProject.genreId"
+                :items="genres.map(genre => ({
+                  value: genre.genreId,
+                  title: genre.genreName
+                }))"
+                label="Genre"
+                :rules="[v => !!v || 'Genre is required']"
+                required
+              />
   
               <v-file-input
                 v-model="newProject.projectFile"
@@ -209,6 +230,17 @@
                 }))"
                 label="Project Manager"
                 :rules="[v => !!v || 'Project manager is required']"
+                required
+              />
+
+              <v-select
+                v-model="editingProject.genreId"
+                :items="genres.map(genre => ({
+                  value: genre.genreId,
+                  title: genre.genreName
+                }))"
+                label="Genre"
+                :rules="[v => !!v || 'Genre is required']"
                 required
               />
 
@@ -303,6 +335,7 @@
   const store = useStore()
   const projects = computed(() => store.state.project.projects)
   const projectManagers = computed(() => store.state.project.projectManagers)
+  const genres = computed(() => store.state.project.genres)
   const showCreateModal = ref(false)
   const showEditModal = ref(false)
   const showDeleteDialog = ref(false)
@@ -314,6 +347,7 @@
     projectStartDate: '',
     projectBudget: '',
     managerId: '',
+    genreId: '',
     projectFile: null
   })
   
@@ -323,6 +357,7 @@
     projectStartDate: '',
     projectBudget: '',
     managerId: '',
+    genreId: '',
     projectFile: null
   })
   
@@ -343,6 +378,12 @@
     })
   }
   
+  const getGenreName = (genreId) => {
+    if (!genreId) return 'N/A';
+    const genre = genres.value.find(g => g.genreId === genreId);
+    return genre ? genre.genreName : 'Unknown';
+  }
+  
   const openEditModal = (project) => {
     editingProject.value = {
       projectId: project.projectId,
@@ -350,6 +391,7 @@
       projectStartDate: project.projectStartDate,
       projectBudget: project.projectBudget,
       managerId: project.managerId,
+      genreId: project.genreId,
       projectFile: project.projectFile
     }
     newProjectFile.value = null
@@ -388,6 +430,7 @@
         projectStartDate: '',
         projectBudget: '',
         managerId: '',
+        genreId: '',
         projectFile: null
       }
     } catch (error) {
@@ -468,6 +511,7 @@
   onMounted(() => {
     store.dispatch('project/fetchProjects')
     store.dispatch('project/fetchProjectManagers')
+    store.dispatch('project/fetchGenres')
   })
   </script>
   

@@ -68,9 +68,7 @@ export default {
                     this.alertType = 'success';
                     this.errorMessage = 'Login successful!';
                     
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000)
+                    this.$router.push('/');
                 },
                 (error) => {
                     this.isLoading = false;

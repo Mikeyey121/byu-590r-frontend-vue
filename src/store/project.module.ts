@@ -5,6 +5,7 @@ export const project = {
   state: {
     projects: [],
     projectManagers: [],
+    genres: [],
     loading: false,
     error: null
   },
@@ -12,8 +13,7 @@ export const project = {
     fetchProjects({ commit }) {
       commit('setLoading', true)
       return ProjectService.getProjects()
-        .then(response => {
-          const projects = response.data.success ? response.data.data : [];
+        .then(projects => {
           commit('setProjects', projects)
           commit('setLoading', false)
           return Promise.resolve(projects)
@@ -24,11 +24,22 @@ export const project = {
           return Promise.reject(error)
         })
     },
+
+    fetchGenres({ commit }) {
+      return ProjectService.getGenres()
+        .then(genres => {
+          commit('setGenres', genres)
+          return Promise.resolve(genres)
+        })
+        .catch(error => {
+          commit('setError', error)
+          return Promise.reject(error)
+        })
+    },
     
     fetchProjectManagers({ commit }) {
       return ProjectService.getProjectManagers()
-        .then(response => {
-          const managers = response.data.success ? response.data.data : [];
+        .then(managers => {
           commit('setProjectManagers', managers)
           return Promise.resolve(managers)
         })
@@ -103,6 +114,10 @@ export const project = {
     
     setProjectManagers(state, managers) {
       state.projectManagers = managers
+    },
+
+    setGenres(state, genres) {
+      state.genres = genres
     },
     
     setLoading(state, isLoading) {
